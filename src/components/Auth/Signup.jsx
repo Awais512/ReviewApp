@@ -1,15 +1,20 @@
 import React from 'react';
-import Container from './Container';
-import FormInput from './Form/FormInput';
-import Submit from './Form/Submit';
-import Title from './Form/Title';
-const Signin = () => {
+import { Link } from 'react-router-dom';
+import { FormInput, Submit, Title, Container, CustomLink } from '../';
+
+const Signup = () => {
   return (
     <div className='fixed inset-0 bg-primary -z-20 flex justify-center items-center'>
       <Container>
         <form className='bg-secondary rounded p-6 w-96 space-y-6'>
-          <Title>Sign In</Title>
+          <Title>Sign Up</Title>
 
+          <FormInput
+            label='Name'
+            placeholder='Enter Your Name'
+            name='name'
+            type='text'
+          />
           <FormInput
             label='Email'
             placeholder='Enter Your Email'
@@ -22,20 +27,21 @@ const Signin = () => {
             name='password'
             type='password'
           />
-          <Submit value='Sign In' />
+
+          <Submit value='Sign up' />
           <div className='flex justify-between'>
-            <a
+            <CustomLink
+              to='/auth/forget-password'
               className='text-dark-subtle hover:text-white transition'
-              href='/forgot'
             >
               Forgot Password
-            </a>
-            <a
+            </CustomLink>
+            <CustomLink
+              to='/auth/signin'
               className='text-dark-subtle hover:text-white transition'
-              href='/signup'
             >
-              Sign Up
-            </a>
+              Sign In
+            </CustomLink>
           </div>
         </form>
       </Container>
@@ -43,4 +49,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default Signup;
