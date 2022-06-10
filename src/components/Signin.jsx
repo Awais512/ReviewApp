@@ -1,6 +1,7 @@
 import React from 'react';
 import Container from './Container';
 import FormInput from './Form/FormInput';
+import Submit from './Form/Submit';
 import Title from './Form/Title';
 const Signin = () => {
   return (
@@ -21,6 +22,21 @@ const Signin = () => {
             name='password'
             type='password'
           />
+          <Submit value='Sign In' />
+          <div className='flex justify-between'>
+            <a
+              className='text-dark-subtle hover:text-white transition'
+              href='/forgot'
+            >
+              Forgot Password
+            </a>
+            <a
+              className='text-dark-subtle hover:text-white transition'
+              href='/signup'
+            >
+              Sign Up
+            </a>
+          </div>
         </form>
       </Container>
     </div>
