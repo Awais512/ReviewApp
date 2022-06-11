@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { FormInput, Submit, Title, Container, CustomLink } from '../';
 
 const Signup = () => {
