@@ -11,12 +11,24 @@ const EmailVerification = () => {
 
   const input = useRef();
 
+  const focusNextInputField = (i) => {
+    setActiveOtpIndex(i + 1);
+  };
+  const focusPrevInputField = (i) => {
+    let nextIndex;
+    const diff = i - 1;
+    nextIndex = diff !== 0 ? diff : 0;
+    setActiveOtpIndex(nextIndex);
+  };
+
   const handleOtpChange = ({ target }, i) => {
     const { value } = target;
     const newOtp = [...otp];
     newOtp[i] = value.substring(value.length - 1, value.length);
+    if (!value) {
+      focusPrevInputField(i);
+    } else focusNextInputField(i);
     setOtp([...newOtp]);
-    setActiveOtpIndex(i + 1);
   };
 
   useEffect(() => {
