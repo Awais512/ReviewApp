@@ -13,7 +13,9 @@ const EmailVerification = () => {
 
   const handleOtpChange = ({ target }, i) => {
     const { value } = target;
-    // setOtp([value]);
+    const newOtp = [...otp];
+    newOtp[i] = value.substring(value.length - 1, value.length);
+    setOtp([...newOtp]);
     setActiveOtpIndex(i + 1);
   };
 
