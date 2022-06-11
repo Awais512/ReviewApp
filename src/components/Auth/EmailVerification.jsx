@@ -9,32 +9,40 @@ const EmailVerification = () => {
   const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(''));
   const [activeOtpIndex, setActiveOtpIndex] = useState(0);
 
-  const input = useRef();
+  const inputRef = useRef();
 
-  const focusNextInputField = (i) => {
-    setActiveOtpIndex(i + 1);
+  const focusNextInputField = (index) => {
+    setActiveOtpIndex(index + 1);
   };
-  const focusPrevInputField = (i) => {
+
+  const focusPrevInputField = (index) => {
     let nextIndex;
-    const diff = i - 1;
+    const diff = index - 1;
     nextIndex = diff !== 0 ? diff : 0;
+
     setActiveOtpIndex(nextIndex);
   };
 
-  const handleOtpChange = ({ target }, i) => {
+  const handleOtpChange = ({ target }, index) => {
     const { value } = target;
     const newOtp = [...otp];
-    newOtp[i] = value.substring(value.length - 1, value.length);
-    if (!value) {
-      focusPrevInputField(i);
-    } else focusNextInputField(i);
+    newOtp[index] = value.substring(value.length - 1, value.length);
+
+    if (!value) focusPrevInputField(index);
+    else focusNextInputField(index);
+
     setOtp([...newOtp]);
   };
 
+  const handleKeyDown = ({ key }, index) => {
+    if (key === 'Backspace') {
+      focusPrevInputField(index);
+    }
+  };
+
   useEffect(() => {
-    input.current?.focus();
+    inputRef.current?.focus();
   }, [activeOtpIndex]);
-  console.log(input);
 
   return (
     <>
@@ -48,13 +56,14 @@ const EmailVerification = () => {
               </p>
             </div>
             <div className='flex justify-center items-center space-x-4'>
-              {otp.map((_, i) => (
+              {otp.map((_, index) => (
                 <input
-                  ref={activeOtpIndex === i ? input : null}
-                  key={i}
-                  onChange={(e) => handleOtpChange(e, i)}
-                  value={otp[i] || ''}
+                  ref={activeOtpIndex === index ? inputRef : null}
+                  key={index}
                   type='number'
+                  value={otp[index] || ''}
+                  onChange={(e) => handleOtpChange(e, index)}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
                   className='w-12 h-12 border-2 border-dark-subtle focus:border-white rounded bg-transparent outline-none text-white text-center font-semibold text-xl spin-button-none firefox'
                 />
               ))}
