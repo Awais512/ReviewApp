@@ -1,6 +1,8 @@
-import React from 'react';
+import { useTheme } from '../hooks';
 
 const Home = () => {
+  const theme = useTheme();
+  console.log(theme);
   return <div>Home</div>;
 };
 
