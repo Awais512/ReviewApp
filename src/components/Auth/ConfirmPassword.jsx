@@ -1,12 +1,14 @@
 import React from 'react';
 import { Title, Container, FormInput, Submit } from '../';
+import { commonModalClasses } from '../../utils/theme';
+import FormContainer from '../Form/FormContainer';
 
 const ConfirmPassword = () => {
   return (
     <>
-      <div className='fixed inset-0 bg-primary -z-20 flex justify-center items-center'>
+      <FormContainer>
         <Container>
-          <form className='bg-secondary rounded p-6 w-96 space-y-6'>
+          <form className={`${commonModalClasses} w-96`}>
             <Title>Please Enter new Password</Title>
 
             <FormInput
@@ -24,7 +26,7 @@ const ConfirmPassword = () => {
             <Submit value='Confirm Password' />
           </form>
         </Container>
-      </div>
+      </FormContainer>
     </>
   );
 };

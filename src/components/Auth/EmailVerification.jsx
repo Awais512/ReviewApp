@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useRef } from 'react';
 import { useState } from 'react';
 import { Title, Container, Submit } from '../';
+import { commonModalClasses } from '../../utils/theme';
+import FormContainer from '../Form/FormContainer';
 
 const OTP_LENGTH = 6;
 
@@ -46,12 +48,12 @@ const EmailVerification = () => {
 
   return (
     <>
-      <div className='fixed inset-0 bg-primary -z-20 flex justify-center items-center'>
+      <FormContainer>
         <Container>
-          <form className='bg-secondary rounded p-6 space-y-6'>
+          <form className={`${commonModalClasses}`}>
             <div>
               <Title>Please Enter the OTP to Verify Your Email</Title>
-              <p className='text-center text-dark-subtle'>
+              <p className='text-center dark:text-dark-subtle text-light-subtle'>
                 OTP has been Sent to Your Email
               </p>
             </div>
@@ -64,7 +66,7 @@ const EmailVerification = () => {
                   value={otp[index] || ''}
                   onChange={(e) => handleOtpChange(e, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
-                  className='w-12 h-12 border-2 border-dark-subtle focus:border-white rounded bg-transparent outline-none text-white text-center font-semibold text-xl spin-button-none firefox'
+                  className='w-12 h-12 border-2 dark:border-dark-subtle border-light-subtle dark:focus:border-white focus:border-primary rounded bg-transparent outline-none dark:text-white text-primary text-center font-semibold text-xl spin-button-none firefox'
                 />
               ))}
             </div>
@@ -72,7 +74,7 @@ const EmailVerification = () => {
             <Submit value='Verify Email' />
           </form>
         </Container>
-      </div>
+      </FormContainer>
     </>
   );
 };

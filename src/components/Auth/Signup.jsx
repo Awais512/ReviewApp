@@ -1,11 +1,13 @@
 import React from 'react';
 import { FormInput, Submit, Title, Container, CustomLink } from '../';
+import { commonModalClasses } from '../../utils/theme';
+import FormContainer from '../Form/FormContainer';
 
 const Signup = () => {
   return (
-    <div className='fixed inset-0 bg-primary -z-20 flex justify-center items-center'>
+    <FormContainer>
       <Container>
-        <form className='bg-secondary rounded p-6 w-96 space-y-6'>
+        <form className={`${commonModalClasses} w-96 space-y-6`}>
           <Title>Sign Up</Title>
 
           <FormInput
@@ -44,7 +46,7 @@ const Signup = () => {
           </div>
         </form>
       </Container>
-    </div>
+    </FormContainer>
   );
 };
 
