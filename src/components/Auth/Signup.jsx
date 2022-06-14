@@ -1,7 +1,24 @@
 import React, { useState } from 'react';
 import { FormInput, Submit, Title, Container, CustomLink } from '../';
+import { isValidEmail } from '../../utils/helper';
 import { commonModalClasses } from '../../utils/theme';
 import FormContainer from '../Form/FormContainer';
+
+const validateUserInfo = ({ name, email, password }) => {
+  const isValidName = /^[a-z A-Z]+$/;
+
+  if (!name.trim()) return { ok: false, error: 'Name is missing!' };
+  if (!isValidName.test(name)) return { ok: false, error: 'Invalid name!' };
+
+  if (!email.trim()) return { ok: false, error: 'Email is missing!' };
+  if (!isValidEmail(email)) return { ok: false, error: 'Invalid email!' };
+
+  if (!password.trim()) return { ok: false, error: 'Password is missing!' };
+  if (password.length < 8)
+    return { ok: false, error: 'Password must be 8 characters long!' };
+
+  return { ok: true };
+};
 
 const Signup = () => {
   const [userInfo, setUserInfo] = useState({
@@ -18,6 +35,8 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const { ok, error } = validateUserInfo(userInfo);
+    if (!ok) return console.log(error);
     console.log(userInfo);
   };
   return (
