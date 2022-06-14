@@ -13,3 +13,4 @@ export { default as Title } from './Form/Title';
 export { default as Home } from './Home';
 export { default as Container } from './Container';
 export { default as CustomLink } from './CustomLink';
+export { default as NotFound } from './NotFound';

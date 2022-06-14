@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
-import { useRef } from 'react';
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Title, Container, Submit } from '../';
 import { commonModalClasses } from '../../utils/theme';
 import FormContainer from '../Form/FormContainer';
@@ -8,6 +7,10 @@ import FormContainer from '../Form/FormContainer';
 const OTP_LENGTH = 6;
 
 const EmailVerification = () => {
+  const { state } = useLocation();
+  const user = state?.user;
+  const navigate = useNavigate();
+
   const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(''));
   const [activeOtpIndex, setActiveOtpIndex] = useState(0);
 
@@ -45,6 +48,14 @@ const EmailVerification = () => {
   useEffect(() => {
     inputRef.current?.focus();
   }, [activeOtpIndex]);
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/not-found');
+    }
+  }, [user, navigate]);
+
+  // if (!user) return null;
 
   return (
     <>

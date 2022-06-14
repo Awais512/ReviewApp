@@ -6,6 +6,7 @@ import {
   EmailVerification,
   ForgotPassword,
   ConfirmPassword,
+  NotFound,
 } from './components';
 import { Route, Routes } from 'react-router-dom';
 
@@ -20,6 +21,7 @@ function App() {
         <Route path='/auth/verify-email' element={<EmailVerification />} />
         <Route path='/auth/forget-password' element={<ForgotPassword />} />
         <Route path='/auth/confirm-password' element={<ConfirmPassword />} />
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </>
   );

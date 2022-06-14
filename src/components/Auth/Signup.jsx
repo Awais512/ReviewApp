@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FormInput, Submit, Title, Container, CustomLink } from '../';
 import { createUser } from '../../api/auth';
 import { isValidEmail } from '../../utils/helper';
@@ -22,6 +23,7 @@ const validateUserInfo = ({ name, email, password }) => {
 };
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
     name: '',
     email: '',
@@ -40,7 +42,11 @@ const Signup = () => {
     if (!ok) return console.log(error);
     const response = await createUser(userInfo);
     if (response.error) return console.log(response.error);
-    console.log(response.user);
+    response.user &&
+      navigate('/auth/verify-email', {
+        state: { user: response.user },
+        replace: true,
+      });
   };
   return (
     <FormContainer>
