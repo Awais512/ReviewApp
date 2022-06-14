@@ -6,6 +6,17 @@ import FormContainer from '../Form/FormContainer';
 
 const OTP_LENGTH = 6;
 
+const isValidOTP = (otp) => {
+  let valid = false;
+
+  for (let val of otp) {
+    valid = !isNaN(parseInt(val));
+    if (!valid) break;
+  }
+
+  return valid;
+};
+
 const EmailVerification = () => {
   const { state } = useLocation();
   const user = state?.user;
@@ -45,15 +56,23 @@ const EmailVerification = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!isValidOTP(otp)) {
+      return console.log('Invalid');
+    }
+    console.log(otp);
+  };
+
   useEffect(() => {
     inputRef.current?.focus();
   }, [activeOtpIndex]);
 
-  useEffect(() => {
-    if (!user) {
-      navigate('/not-found');
-    }
-  }, [user, navigate]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     navigate('/not-found');
+  //   }
+  // }, [user, navigate]);
 
   // if (!user) return null;
 
@@ -61,7 +80,7 @@ const EmailVerification = () => {
     <>
       <FormContainer>
         <Container>
-          <form className={`${commonModalClasses}`}>
+          <form onSubmit={handleSubmit} className={`${commonModalClasses}`}>
             <div>
               <Title>Please Enter the OTP to Verify Your Email</Title>
               <p className='text-center dark:text-dark-subtle text-light-subtle'>
@@ -82,7 +101,7 @@ const EmailVerification = () => {
               ))}
             </div>
 
-            <Submit value='Verify Email' />
+            <Submit value='Verify Account' />
           </form>
         </Container>
       </FormContainer>
