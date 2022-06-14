@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FormInput, Submit, Title, Container, CustomLink } from '../';
+import { createUser } from '../../api/auth';
 import { isValidEmail } from '../../utils/helper';
 import { commonModalClasses } from '../../utils/theme';
 import FormContainer from '../Form/FormContainer';
@@ -37,7 +38,9 @@ const Signup = () => {
     e.preventDefault();
     const { ok, error } = validateUserInfo(userInfo);
     if (!ok) return console.log(error);
-    console.log(userInfo);
+    const response = await createUser(userInfo);
+    if (response.error) return console.log(response.error);
+    console.log(response.user);
   };
   return (
     <FormContainer>
