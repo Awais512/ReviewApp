@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Title, Container, Submit } from '../';
+import { verifyUserEmail } from '../../api/auth';
 import { commonModalClasses } from '../../utils/theme';
 import FormContainer from '../Form/FormContainer';
 
@@ -21,6 +22,7 @@ const EmailVerification = () => {
   const { state } = useLocation();
   const user = state?.user;
   const navigate = useNavigate();
+  console.log(user);
 
   const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(''));
   const [activeOtpIndex, setActiveOtpIndex] = useState(0);
@@ -61,20 +63,23 @@ const EmailVerification = () => {
     if (!isValidOTP(otp)) {
       return console.log('Invalid');
     }
-    console.log(otp);
+    const { error, message } = await verifyUserEmail({
+      OTP: otp.join(''),
+      userId: user.id,
+    });
+    if (error) return console.log(error);
+    console.log(message);
   };
 
   useEffect(() => {
     inputRef.current?.focus();
   }, [activeOtpIndex]);
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     navigate('/not-found');
-  //   }
-  // }, [user, navigate]);
-
-  // if (!user) return null;
+  useEffect(() => {
+    if (!user) {
+      navigate('/not-found');
+    }
+  }, [user, navigate]);
 
   return (
     <>

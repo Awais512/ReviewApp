@@ -18,6 +18,7 @@ export const verifyUserEmail = async (userInfo) => {
   } catch (error) {
     const { response } = error;
     if (response?.data) return response.data;
+
     return { error: error.message || error };
   }
 };
