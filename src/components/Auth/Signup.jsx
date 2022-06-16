@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FormInput, Submit, Title, Container, CustomLink } from '../';
 import { createUser } from '../../api/auth';
+import { useNotification } from '../../hooks/index';
 import { isValidEmail } from '../../utils/helper';
 import { commonModalClasses } from '../../utils/theme';
 import FormContainer from '../Form/FormContainer';
@@ -23,6 +24,7 @@ const validateUserInfo = ({ name, email, password }) => {
 };
 
 const Signup = () => {
+  const { updateNotification } = useNotification();
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
     name: '',
@@ -39,7 +41,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { ok, error } = validateUserInfo(userInfo);
-    if (!ok) return console.log(error);
+    if (!ok) return updateNotification('error', error);
     const response = await createUser(userInfo);
     if (response.error) return console.log(response.error);
     response.user &&
