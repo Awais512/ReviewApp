@@ -2,6 +2,8 @@ import { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Title, Container, Submit } from '../';
 import { verifyUserEmail } from '../../api/auth';
+import { useNotification } from '../../hooks';
+
 import { commonModalClasses } from '../../utils/theme';
 import FormContainer from '../Form/FormContainer';
 
@@ -19,6 +21,7 @@ const isValidOTP = (otp) => {
 };
 
 const EmailVerification = () => {
+  const { updateNotification } = useNotification();
   const { state } = useLocation();
   const user = state?.user;
   const navigate = useNavigate();
@@ -67,8 +70,8 @@ const EmailVerification = () => {
       OTP: otp.join(''),
       userId: user.id,
     });
-    if (error) return console.log(error);
-    console.log(message);
+    if (error) return updateNotification('error', error);
+    updateNotification('success', message);
   };
 
   useEffect(() => {
