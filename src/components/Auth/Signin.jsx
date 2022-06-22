@@ -1,22 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container, FormInput, Submit, Title, CustomLink } from '../';
+import { login } from '../../api/auth';
+import { useNotification } from '../../hooks/index';
+import { isValidEmail } from '../../utils/helper';
 import { commonModalClasses } from '../../utils/theme';
+import {useAuth} from '../../hooks/index'
 import FormContainer from '../Form/FormContainer';
 
+const validateUserInfo = ({  email, password }) => {
+ 
+
+  if (!email.trim()) return { ok: false, error: 'Email is missing!' };
+  if (!isValidEmail(email)) return { ok: false, error: 'Invalid email!' };
+
+  if (!password.trim()) return { ok: false, error: 'Password is missing!' };
+  if (password.length < 8)
+    return { ok: false, error: 'Password must be 8 characters long!' };
+
+  return { ok: true };
+};
+
 const Signin = () => {
+  const { updateNotification } = useNotification();
+  const {handleLogin,authInfo} = useAuth()
+  const navigate = useNavigate();
+
+  const [userInfo, setUserInfo] = useState({
+    email: '',
+    password: '',
+  }); 
+
+
+  console.log(authInfo)
+
+  const handleChange = ({ target }) => {
+    const { value, name } = target;
+    setUserInfo({ ...userInfo, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { ok, error } = validateUserInfo(userInfo);
+
+    if (!ok) return updateNotification("error", error);
+    handleLogin(userInfo.email, userInfo.password);
+  };
+
+
   return (
     <FormContainer>
       <Container>
-        <form className={`${commonModalClasses} w-96`}>
+        <form onSubmit={handleSubmit} className={`${commonModalClasses} w-96`}>
           <Title>Sign In</Title>
 
           <FormInput
+          value={userInfo.email}
+          onChange={handleChange}
             label='Email'
             placeholder='Enter Your Email'
             name='email'
             type='text'
           />
           <FormInput
+          value={userInfo.password}
+          onChange={handleChange}
             label='Password'
             placeholder='Enter Your Password'
             name='password'
