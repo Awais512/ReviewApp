@@ -1,8 +1,8 @@
-import client from './client';
+import client from "./client";
 
 export const createUser = async (userInfo) => {
   try {
-    const { data } = await client.post('/users/register', userInfo);
+    const { data } = await client.post("/users/register", userInfo);
     return data;
   } catch (error) {
     const { response } = error;
@@ -13,7 +13,19 @@ export const createUser = async (userInfo) => {
 
 export const verifyUserEmail = async (userInfo) => {
   try {
-    const { data } = await client.post('/users/verify', userInfo);
+    const { data } = await client.post("/users/verify", userInfo);
+    return data;
+  } catch (error) {
+    const { response } = error;
+    if (response?.data) return response.data;
+
+    return { error: error.message || error };
+  }
+};
+
+export const login = async (userInfo) => {
+  try {
+    const { data } = await client.post("/users/login", userInfo);
     return data;
   } catch (error) {
     const { response } = error;
