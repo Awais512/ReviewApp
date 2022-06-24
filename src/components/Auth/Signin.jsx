@@ -1,39 +1,33 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Container, FormInput, Submit, Title, CustomLink } from '../';
-import { login } from '../../api/auth';
-import { useNotification } from '../../hooks/index';
-import { isValidEmail } from '../../utils/helper';
-import { commonModalClasses } from '../../utils/theme';
-import {useAuth} from '../../hooks/index'
-import FormContainer from '../Form/FormContainer';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Container, FormInput, Submit, Title, CustomLink } from "../";
+import { useNotification } from "../../hooks/index";
+import { isValidEmail } from "../../utils/helper";
+import { commonModalClasses } from "../../utils/theme";
+import { useAuth } from "../../hooks/index";
+import FormContainer from "../Form/FormContainer";
 
-const validateUserInfo = ({  email, password }) => {
- 
+const validateUserInfo = ({ email, password }) => {
+  if (!email.trim()) return { ok: false, error: "Email is missing!" };
+  if (!isValidEmail(email)) return { ok: false, error: "Invalid email!" };
 
-  if (!email.trim()) return { ok: false, error: 'Email is missing!' };
-  if (!isValidEmail(email)) return { ok: false, error: 'Invalid email!' };
-
-  if (!password.trim()) return { ok: false, error: 'Password is missing!' };
+  if (!password.trim()) return { ok: false, error: "Password is missing!" };
   if (password.length < 8)
-    return { ok: false, error: 'Password must be 8 characters long!' };
+    return { ok: false, error: "Password must be 8 characters long!" };
 
   return { ok: true };
 };
 
 const Signin = () => {
   const { updateNotification } = useNotification();
-  const {handleLogin,authInfo} = useAuth()
-  const {isPending} = authInfo
+  const { handleLogin, authInfo } = useAuth();
+  const { isPending, isLoggedIn } = authInfo;
   const navigate = useNavigate();
 
   const [userInfo, setUserInfo] = useState({
-    email: '',
-    password: '',
-  }); 
-
-
-  console.log(authInfo)
+    email: "",
+    password: "",
+  });
 
   const handleChange = ({ target }) => {
     const { value, name } = target;
@@ -48,6 +42,11 @@ const Signin = () => {
     handleLogin(userInfo.email, userInfo.password);
   };
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn]);
 
   return (
     <FormContainer>
@@ -56,32 +55,32 @@ const Signin = () => {
           <Title>Sign In</Title>
 
           <FormInput
-          value={userInfo.email}
-          onChange={handleChange}
-            label='Email'
-            placeholder='Enter Your Email'
-            name='email'
-            type='text'
+            value={userInfo.email}
+            onChange={handleChange}
+            label="Email"
+            placeholder="Enter Your Email"
+            name="email"
+            type="text"
           />
           <FormInput
-          value={userInfo.password}
-          onChange={handleChange}
-            label='Password'
-            placeholder='Enter Your Password'
-            name='password'
-            type='password'
+            value={userInfo.password}
+            onChange={handleChange}
+            label="Password"
+            placeholder="Enter Your Password"
+            name="password"
+            type="password"
           />
-          <Submit value='Sign In' busy={isPending} />
-          <div className='flex justify-between'>
+          <Submit value="Sign In" busy={isPending} />
+          <div className="flex justify-between">
             <CustomLink
-              to='/auth/forget-password'
-              className='text-dark-subtle hover:text-white transition'
+              to="/auth/forget-password"
+              className="text-dark-subtle hover:text-white transition"
             >
               Forgot Password
             </CustomLink>
             <CustomLink
-              to='/auth/signup'
-              className='text-dark-subtle hover:text-white transition'
+              to="/auth/signup"
+              className="text-dark-subtle hover:text-white transition"
             >
               Sign Up
             </CustomLink>

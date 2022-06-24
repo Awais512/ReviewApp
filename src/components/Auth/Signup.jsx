@@ -1,35 +1,39 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FormInput, Submit, Title, Container, CustomLink } from '../';
-import { createUser } from '../../api/auth';
-import { useNotification } from '../../hooks/index';
-import { isValidEmail } from '../../utils/helper';
-import { commonModalClasses } from '../../utils/theme';
-import FormContainer from '../Form/FormContainer';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FormInput, Submit, Title, Container, CustomLink } from "../";
+import { createUser } from "../../api/auth";
+import { useNotification } from "../../hooks/index";
+import { isValidEmail } from "../../utils/helper";
+import { commonModalClasses } from "../../utils/theme";
+import FormContainer from "../Form/FormContainer";
+import { useAuth } from "../../hooks/index";
 
 const validateUserInfo = ({ name, email, password }) => {
   const isValidName = /^[a-z A-Z]+$/;
 
-  if (!name.trim()) return { ok: false, error: 'Name is missing!' };
-  if (!isValidName.test(name)) return { ok: false, error: 'Invalid name!' };
+  if (!name.trim()) return { ok: false, error: "Name is missing!" };
+  if (!isValidName.test(name)) return { ok: false, error: "Invalid name!" };
 
-  if (!email.trim()) return { ok: false, error: 'Email is missing!' };
-  if (!isValidEmail(email)) return { ok: false, error: 'Invalid email!' };
+  if (!email.trim()) return { ok: false, error: "Email is missing!" };
+  if (!isValidEmail(email)) return { ok: false, error: "Invalid email!" };
 
-  if (!password.trim()) return { ok: false, error: 'Password is missing!' };
+  if (!password.trim()) return { ok: false, error: "Password is missing!" };
   if (password.length < 8)
-    return { ok: false, error: 'Password must be 8 characters long!' };
+    return { ok: false, error: "Password must be 8 characters long!" };
 
   return { ok: true };
 };
 
 const Signup = () => {
   const { updateNotification } = useNotification();
+  const { authInfo } = useAuth();
+  const { isLoggedIn } = authInfo;
+
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
-    name: '',
-    email: '',
-    password: '',
+    name: "",
+    email: "",
+    password: "",
   });
   const { name, email, password } = userInfo;
 
@@ -41,15 +45,22 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { ok, error } = validateUserInfo(userInfo);
-    if (!ok) return updateNotification('error', error);
+    if (!ok) return updateNotification("error", error);
     const response = await createUser(userInfo);
     if (response.error) return console.log(response.error);
     response.user &&
-      navigate('/auth/verify-email', {
+      navigate("/auth/verify-email", {
         state: { user: response.user },
         replace: true,
       });
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn]);
+
   return (
     <FormContainer>
       <Container>
@@ -62,39 +73,39 @@ const Signup = () => {
           <FormInput
             onChange={handleChange}
             value={name}
-            label='Name'
-            placeholder='Enter Your Name'
-            name='name'
-            type='text'
+            label="Name"
+            placeholder="Enter Your Name"
+            name="name"
+            type="text"
           />
           <FormInput
             onChange={handleChange}
             value={email}
-            label='Email'
-            placeholder='Enter Your Email'
-            name='email'
-            type='text'
+            label="Email"
+            placeholder="Enter Your Email"
+            name="email"
+            type="text"
           />
           <FormInput
             onChange={handleChange}
             value={password}
-            label='Password'
-            placeholder='Enter Your Password'
-            name='password'
-            type='password'
+            label="Password"
+            placeholder="Enter Your Password"
+            name="password"
+            type="password"
           />
 
-          <Submit value='Sign up' />
-          <div className='flex justify-between'>
+          <Submit value="Sign up" />
+          <div className="flex justify-between">
             <CustomLink
-              to='/auth/forget-password'
-              className='text-dark-subtle hover:text-white transition'
+              to="/auth/forget-password"
+              className="text-dark-subtle hover:text-white transition"
             >
               Forgot Password
             </CustomLink>
             <CustomLink
-              to='/auth/signin'
-              className='text-dark-subtle hover:text-white transition'
+              to="/auth/signin"
+              className="text-dark-subtle hover:text-white transition"
             >
               Sign In
             </CustomLink>
