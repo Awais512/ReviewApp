@@ -7,7 +7,7 @@ const logo = "../logo.png";
 
 const Navbar = () => {
   const { toggleTheme } = useTheme();
-  const { authInfo } = useAuth();
+  const { authInfo, handleLogout } = useAuth();
   const { isLoggedIn } = authInfo;
 
   return (
@@ -35,8 +35,11 @@ const Navbar = () => {
               />
             </li>
             {isLoggedIn ? (
-              <li className="text-white font-semibold text-lg">
-                <Link to="/">Logout</Link>
+              <li
+                onClick={handleLogout}
+                className="text-white font-semibold text-lg"
+              >
+                <Link to="/auth/signin">Logout</Link>
               </li>
             ) : (
               <li className="text-white font-semibold text-lg">

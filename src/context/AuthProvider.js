@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { getIsAuth, login } from "../api/auth";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 const defaultAuthInfo = {
@@ -10,6 +11,7 @@ const defaultAuthInfo = {
 };
 
 export default function AuthProvider({ children }) {
+  const navigate = useNavigate();
   const [authInfo, setAuthInfo] = useState({ ...defaultAuthInfo });
 
   const handleLogin = async (email, password) => {
@@ -44,14 +46,19 @@ export default function AuthProvider({ children }) {
     });
   };
 
-  const handleLogout = async () => {};
+  const handleLogout = async () => {
+    localStorage.removeItem("auth-token");
+    setAuthInfo({ ...defaultAuthInfo });
+  };
 
   useEffect(() => {
     isAuth();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ authInfo, handleLogin, isAuth }}>
+    <AuthContext.Provider
+      value={{ authInfo, handleLogin, isAuth, handleLogout }}
+    >
       {children}
     </AuthContext.Provider>
   );
