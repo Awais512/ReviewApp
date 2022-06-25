@@ -1,9 +1,6 @@
-import { useTheme } from '../hooks';
+import React from "react";
+import { NotVerified } from "./";
 
-const Home = () => {
-  const theme = useTheme();
-  console.log(theme);
-  return <div>Home</div>;
-};
-
-export default Home;
+export default function Home() {
+  return <NotVerified />;
+}
