@@ -51,3 +51,15 @@ export const getIsAuth = async (token) => {
     return { error: error.message || error };
   }
 };
+
+export const forgotPassword = async (email) => {
+  try {
+    const { data } = await client.post("/users/forgot-password", { email });
+    return data;
+  } catch (error) {
+    const { response } = error;
+    if (response?.data) return response.data;
+
+    return { error: error.message || error };
+  }
+};
