@@ -11,7 +11,7 @@ export default function NotVerified() {
   const navigate = useNavigate();
 
   const navigateToVerification = () => {
-    navigate("/auth/verification", { state: { user: authInfo.profile } });
+    navigate("/auth/verify-email", { state: { user: authInfo.profile } });
   };
 
   return (

@@ -23,11 +23,11 @@ const isValidOTP = (otp) => {
 const EmailVerification = () => {
   const { updateNotification } = useNotification();
   const { isAuth, authInfo } = useAuth();
-  const { isLoggedIn } = authInfo;
+  const { isLoggedIn, profile } = authInfo;
+  const isVerified = profile?.isVerified;
   const { state } = useLocation();
   const user = state?.user;
   const navigate = useNavigate();
-  console.log(user);
 
   const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(""));
   const [activeOtpIndex, setActiveOtpIndex] = useState(0);
@@ -90,7 +90,7 @@ const EmailVerification = () => {
     if (!user) {
       navigate("/not-found");
     }
-    if (isLoggedIn) navigate("/");
+    if (isLoggedIn && isVerified) navigate("/");
   }, [user, navigate, isLoggedIn]);
 
   return (
