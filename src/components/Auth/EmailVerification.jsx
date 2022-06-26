@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Title, Container, Submit } from "../";
-import { verifyUserEmail } from "../../api/auth";
+import { resendEmailVerificationToken, verifyUserEmail } from "../../api/auth";
 import { useNotification, useAuth } from "../../hooks";
 
 import { commonModalClasses } from "../../utils/theme";
@@ -63,6 +63,12 @@ const EmailVerification = () => {
     }
   };
 
+  const resendOTP = async () => {
+    const { error, message } = await resendEmailVerificationToken(user.id);
+    if (error) return updateNotification("error", error);
+    updateNotification("success", message);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isValidOTP(otp)) {
@@ -91,7 +97,7 @@ const EmailVerification = () => {
       navigate("/not-found");
     }
     if (isLoggedIn && isVerified) navigate("/");
-  }, [user, navigate, isLoggedIn]);
+  }, [user, navigate, isLoggedIn, isVerified]);
 
   return (
     <>
@@ -120,6 +126,7 @@ const EmailVerification = () => {
             <div>
               <Submit value="Verify Account" />
               <button
+                onClick={resendOTP}
                 type="button"
                 className="dark:text-white text-blue-500 font-semibold hover:underline"
               >
